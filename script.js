@@ -5,7 +5,7 @@ const maxFish = 10;
 const field = {
     timer: document.getElementById('timer'),
     username: document.getElementById('username'),
-    userScore: document.getElementById('userscore'),
+    userscore: document.getElementById('userscore'),
     pool: document.getElementById('pool'),
     pool_W: document.getElementById('pool').clientWidth,
     pool_H: document.getElementById('pool').clientHeight,
@@ -19,6 +19,10 @@ function createFish(n) {
         fishNode.style.left = (Math.random() * field.pool_W - fishNode.clientHeight) + 'px';
         fishList.push(fishNode);
         field.pool.append(fishNode);
+        fishNode.onclick = ()=>{
+            fishNode.remove();
+        };
+
         console.log(fishNode);
         console.log(fishList);
     }
@@ -34,20 +38,20 @@ function main() {
     }
 
     field.username.innerHTML = `Имя: ${user.name ? user.name : 'неизвестный'}`;
+    field.userscore.innerHTML = `Ваш счет: ${user.score}`;
 
     const gameInterval = setInterval(() => {
         field.timer.innerHTML = `До конца: ${timer / 1000} сек.`;
+        createFish(3);
         timer -= 1000;
-        createFish(1);
+        if(!timer) {
+            clearInterval(gameInterval)
+            confirm(`
+            Игра закончена! Ваш счет: ${user.score}
+            Сыграть еще раз?
+            `)
+        };
     }, 1000);
-    
-    setTimeout(()=>{
-        clearInterval(gameInterval)
-        confirm(`
-        Игра закончена! Ваш счет: ${user.score}
-        Сыграть еще раз?
-        `);
-    }, timer);
 }
 
 main();
