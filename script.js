@@ -10,8 +10,8 @@ class fishingGame {
             username: document.getElementById('username'),
             userscore: document.getElementById('userscore'),
             pool: document.getElementById('pool'),
-            pool_W: document.getElementById('pool').clientWidth,
-            pool_H: document.getElementById('pool').clientHeight,
+            pool_W: document.getElementById('pool').offsetWidth,
+            pool_H: document.getElementById('pool').offsetHeight,
         };
     }
     start() {
@@ -27,7 +27,7 @@ class fishingGame {
         const gameInterval = setInterval(() => {
             time -= 1000;
             this.field.timer.innerHTML = `До конца: ${time / 1000} сек.`;
-            this.fishList.push(...this.createFish(3));
+            this.fishList.push(...this.createFish(12));
             
             if(time < 0) {
                 clearInterval(gameInterval)
@@ -48,13 +48,14 @@ class fishingGame {
         let newFishes = [];
         for(let i = 1; i <= n; i++) {
             let fishNode = document.createElement('div');
+            let rect = fishNode.getBoundingClientRect();
             fishNode.classList.add('fish');
-            console.log(fishNode);
-            console.log(fishNode.offsetHeight);
-            fishNode.style.top = (Math.random() * this.field.pool_H - fishNode.clientWidth) + 'px';
-            fishNode.style.left = (Math.random() * this.field.pool_W - fishNode.clientHeight) + 'px';
-            newFishes.push(fishNode);
             this.field.pool.append(fishNode);
+            newFishes.push(fishNode);
+
+            fishNode.style.top = (Math.random() * this.field.pool_H - fishNode.offsetWidth) + 'px';
+            fishNode.style.left = (Math.random() * this.field.pool_W - fishNode.offsetHeight) + 'px';
+
             fishNode.onclick = () => {
                 fishNode.remove();
                 this.userscore++;
