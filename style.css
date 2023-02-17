@@ -55,3 +55,23 @@ h1 {
     background-size: cover;
     cursor: pointer;
 }
+.animation-swimming {
+    animation: go-left-right 8s infinite alternate;
+    animation-timing-function: ease-in-out;
+}
+@keyframes go-left-right {
+    from {
+        left: 0px;
+        transform: scale(1, 1);
+    }
+    45%{
+        transform: scale(1, 1);
+    }
+    55% {
+        transform: scale(-1, 1);
+    }
+    to {
+        left: calc(100% - 80px);
+        transform: scale(-1, 1);
+    }
+}

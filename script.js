@@ -1,33 +1,33 @@
 'use strict';
 
-class fishingGame {
-    constructor(maxTimer = 10000, maxFish = 10) {
-        this.maxFish = maxFish;
+class FishingGame {
+    constructor(maxTimer = 60000, maxFishes = 50) {
         this.maxTimer = maxTimer;
-        this.fishList = [];
+        this.maxFishes = maxFishes;
         this.field = {
-            timer: document.getElementById('timer'),
-            username: document.getElementById('username'),
-            userscore: document.getElementById('userscore'),
+            timer: document.getElementById('timer_value'),
+            username: document.getElementById('username_value'),
+            userscore: document.getElementById('userscore_value'),
             pool: document.getElementById('pool'),
+            fishes: document.getElementsByClassName('fish'),
             pool_W: document.getElementById('pool').offsetWidth,
             pool_H: document.getElementById('pool').offsetHeight,
         };
     }
     start() {
-        this.fishList = [...this.createFish(3)];
+        this.clearField();
         this.user = {
             name: prompt('Введите имя пользователя'),
             score: 0,
         }
         let time = this.maxTimer;
 
-        this.field.username.innerHTML = `Имя: ${this.user.name ? this.user.name : 'неизвестный'}`;
+        this.field.username.innerText = `${this.user.name ? this.user.name : 'неизвестный'}`;
 
         const gameInterval = setInterval(() => {
             time -= 1000;
-            this.field.timer.innerHTML = `До конца: ${time / 1000} сек.`;
-            this.fishList.push(...this.createFish(12));
+            this.field.timer.innerText = `${time / 1000} сек.`;
+            this.createFish(3);
             
             if(time < 0) {
                 clearInterval(gameInterval)
@@ -41,30 +41,39 @@ class fishingGame {
         }, 1000);
     }
     end() {
-        this.fishList = [];
-        alert('Игра закончена');
+        this.clearField();
+        alert('Игра окончена!');
+    }
+    clearField() {
+        this.field.username.innerText = '';
+        this.field.userscore.innerText = '0';
+        this.field.timer.innerText = '0';
+        this.field.pool.replaceChildren();
     }
     createFish(n) {
-        let newFishes = [];
         for(let i = 1; i <= n; i++) {
-            let fishNode = document.createElement('div');
-            let rect = fishNode.getBoundingClientRect();
-            fishNode.classList.add('fish');
-            this.field.pool.append(fishNode);
-            newFishes.push(fishNode);
+            if(document.getElementsByClassName('fish').length < this.maxFishes) {
+                let fish = document.createElement('div')
+                fish.classList.add('fish', 'animation-swimming');
+                this.field.pool.append(fish);
+                fish.onclick = () => {this.onClick(fish)};
 
-            fishNode.style.top = (Math.random() * this.field.pool_H - fishNode.offsetWidth) + 'px';
-            fishNode.style.left = (Math.random() * this.field.pool_W - fishNode.offsetHeight) + 'px';
-
-            fishNode.onclick = () => {
-                fishNode.remove();
-                this.userscore++;
-                this.field.userscore.innerHTML = `Ваш счет: ${++this.user.score}`;
-            };
+                this.setFish(fish);
+            }  
         }
-        return newFishes;
+    }
+    setFish(fish) {
+        let startMoment = Math.round(Math.random() * 8);
+        fish.style.animationDelay = `-${startMoment}s`;
+        let fishTop = Math.random() * this.field.pool_H - fish.offsetHeight;
+        fish.style.top = ((fishTop < 0) ? 0 : fishTop) + 'px';
+    }
+    onClick(fish) {
+        fish.remove();
+        this.userscore++;
+        this.field.userscore.innerText = `${++this.user.score}`;
     }
 }
 
-const newGame = new fishingGame();
-newGame.start();
+const fishingGame = new FishingGame(60000, 10);
+fishingGame.start();
