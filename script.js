@@ -1,5 +1,3 @@
-'use strict';
-
 class FishingGame {
     constructor(maxTimer = 60000, maxFishes = 50) {
         this.maxTimer = maxTimer;

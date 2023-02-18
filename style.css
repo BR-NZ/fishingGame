@@ -56,29 +56,5 @@ h1 {
     cursor: pointer;
 
     left: 0px;
-    transition: left 8s ease-in-out;
+    transition: left 7s ease-in-out;
 }
-
-/* .animation-reverse {
-    animation-name: go-right-left !important;
-}
-@keyframes go-left-right {
-    from {
-        left: 0px;
-        transform: scale(-1, 1);
-    }
-    to {
-        left: calc(100% - 80px);
-        transform: scale(-1, 1);
-    }
-}
-@keyframes go-right-left {
-    from {
-        left: calc(100% - 80px);
-        transform: scale(1, 1);
-    }
-    to {
-        left: 0px;
-        transform: scale(1, 1);
-    }
-} */
