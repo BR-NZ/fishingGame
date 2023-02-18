@@ -54,20 +54,17 @@ h1 {
     background-repeat: no-repeat;
     background-size: cover;
     cursor: pointer;
+
+    left: 0px;
+    transition: left 8s ease-in-out;
 }
-.animation-swimming {
-    animation: go-left-right 8s infinite alternate;
-    animation-timing-function: ease-in-out;
+
+/* .animation-reverse {
+    animation-name: go-right-left !important;
 }
 @keyframes go-left-right {
     from {
         left: 0px;
-        transform: scale(1, 1);
-    }
-    45%{
-        transform: scale(1, 1);
-    }
-    55% {
         transform: scale(-1, 1);
     }
     to {
@@ -75,3 +72,13 @@ h1 {
         transform: scale(-1, 1);
     }
 }
+@keyframes go-right-left {
+    from {
+        left: calc(100% - 80px);
+        transform: scale(1, 1);
+    }
+    to {
+        left: 0px;
+        transform: scale(1, 1);
+    }
+} */

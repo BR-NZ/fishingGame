@@ -54,19 +54,34 @@ class FishingGame {
         for(let i = 1; i <= n; i++) {
             if(document.getElementsByClassName('fish').length < this.maxFishes) {
                 let fish = document.createElement('div')
-                fish.classList.add('fish', 'animation-swimming');
+                fish.classList.add('fish');
                 this.field.pool.append(fish);
                 fish.onclick = () => {this.onClick(fish)};
-
+                
                 this.setFish(fish);
             }  
         }
     }
     setFish(fish) {
-        let startMoment = Math.round(Math.random() * 8);
-        fish.style.animationDelay = `-${startMoment}s`;
         let fishTop = Math.random() * this.field.pool_H - fish.offsetHeight;
         fish.style.top = ((fishTop < 0) ? 0 : fishTop) + 'px';
+        
+        let times = 0;
+        function go() {
+            console.log('GO');
+            if(times % 2) {
+                fish.style.left = '0px';
+                fish.style.transform = 'scaleX(1)';
+            } else {
+                fish.style.left = 'calc(100% - 80px)'
+                fish.style.transform = 'scaleX(-1)';
+            }
+        }
+        go();
+        fish.addEventListener('transitionend', function(event) {
+            times++;
+            go();
+        });
     }
     onClick(fish) {
         fish.remove();
