@@ -51,42 +51,51 @@ class FishingGame {
     createFish(n) {
         for(let i = 1; i <= n; i++) {
             if(document.getElementsByClassName('fish').length < this.maxFishes) {
-                let fish = document.createElement('div')
-                fish.classList.add('fish');
-                this.field.pool.append(fish);
-                fish.onclick = () => {this.onClick(fish)};
+                let fishOuter = document.createElement('div')
+                fishOuter.classList.add('fish_outer');
+                this.field.pool.append(fishOuter);
                 
-                this.setFish(fish);
+                fishOuter.onclick = () => {this.onClick(fishOuter)};
+                
+                this.setFish(fishOuter);
             }  
         }
     }
-    setFish(fish) {
+    setFish(fishOuter) {
+        let fish = document.createElement('div');
+        let dx = Math.random() * 0.25;
+        fish.classList.add('fish')
+        fish.style.animationDelay = `-${dx}s`; 
+        fishOuter.append(fish);
+
+        let fishLeft = Math.random() * this.field.pool_W - fish.offsetWidth;
+        fishOuter.style.left = ((fishLeft < 0) ? 0 : fishLeft) + 'px';
+
         let fishTop = Math.random() * this.field.pool_H - fish.offsetHeight;
-        fish.style.top = ((fishTop < 0) ? 0 : fishTop) + 'px';
-        
+        fishOuter.style.top = ((fishTop < 0) ? 0 : fishTop) + 'px';
+
         let times = 0;
         function go() {
-            console.log('GO');
             if(times % 2) {
-                fish.style.left = '0px';
-                fish.style.transform = 'scaleX(1)';
+                fishOuter.style.left = '0px';
+                fishOuter.style.transform = 'scaleX(1)';
             } else {
-                fish.style.left = 'calc(100% - 80px)'
-                fish.style.transform = 'scaleX(-1)';
+                fishOuter.style.left = 'calc(100% - 80px)'
+                fishOuter.style.transform = 'scaleX(-1)';
             }
         }
         go();
-        fish.addEventListener('transitionend', function(event) {
+        fishOuter.addEventListener('transitionend', function(event) {
             times++;
             go();
         });
     }
-    onClick(fish) {
-        fish.remove();
+    onClick(fishOuter) {
+        fishOuter.remove();
         this.userscore++;
         this.field.userscore.innerText = `${++this.user.score}`;
     }
 }
 
-const fishingGame = new FishingGame(60000, 10);
+const fishingGame = new FishingGame(60000, 18);
 fishingGame.start();
